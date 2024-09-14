@@ -31,28 +31,6 @@ const http = require('http'); // Sử dụng thư viện http của Node.js
 
 const port = process.env.PORT || 3005; // Sử dụng biến môi trường PORT nếu có hoặc 3005
 
-const server = http.createServer((req, res) => {
-    res.statusCode = 200;
-    res.type('html').send(html);
-});
-
-// Lắng nghe trên cổng được chỉ định mà không cần hostname
-server.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-});
-
-
-// const express = require("express");
-// const app = express();
-// const port = process.env.PORT || 3001;
-
-// app.get("/", (req, res) => res.type('html').send(html));
-
-// const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
-
-server.keepAliveTimeout = 120 * 1000;
-server.headersTimeout = 120 * 1000;
-
 const html = `
 <!DOCTYPE html>
 <html>
@@ -104,3 +82,16 @@ const html = `
   </body>
 </html>
 `
+const server = http.createServer((req, res) => {
+  res.statusCode = 200; // Thiết lập mã trạng thái HTTP
+  res.setHeader('Content-Type', 'text/html'); // Thiết lập kiểu dữ liệu trả về là HTML
+  res.end(html); // Trả về nội dung HTML
+});
+
+// Lắng nghe trên cổng được chỉ định
+server.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
+
+server.keepAliveTimeout = 120 * 1000;
+server.headersTimeout = 120 * 1000;
